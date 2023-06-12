@@ -1,4 +1,4 @@
-module learn-grpc
+module learn-rpc
 
 go 1.19
 

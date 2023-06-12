@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"learn-grpc/proto"
+	"learn-rpc/03-grpc/proto"
 	"log"
 	"net"
 
