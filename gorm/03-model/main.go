@@ -10,10 +10,15 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type Product struct {
+type User struct {
 	gorm.Model
-	Code  string
-	Price uint
+	Name string `gorm:"type:varchar(20);index:idx_name,unique"`
+	Age  int    `gorm:"type:tinyint unsigned"`
+}
+
+// user 实际表名
+func (m *User) TableName() string {
+	return "my_user"
 }
 
 func main() {
@@ -33,16 +38,20 @@ func main() {
 	}
 	log.Println("db connection success.")
 	// 迁移 schema  直接生成表
-	db.AutoMigrate(&Product{})
+	err = db.AutoMigrate(&User{})
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 	// Create
-	db.Create(&Product{Code: "D42", Price: 100})
-
+	db.Create(&User{Name: "张三", Age: 18})
 	// Read
-	var product Product
-	product.ID = 1
-	log.Printf("查询前：%#v", product)
+	var user User
+	user.ID = 1
+	log.Printf("查询前：%#v", user)
 
-	db.First(&product)
-	log.Printf("查询结果：%#v", product)
-	db.Delete(&product)
+	db.First(&user)
+	log.Printf("查询结果：%#v", user)
+	db.Delete(&user)
 }
